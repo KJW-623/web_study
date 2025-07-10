@@ -7,6 +7,16 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>practice03page</h1>
+	<h1>/practice03/viewData</h1>
+	
+	<div>
+		<p>${name}</p>
+		<p>${type}</p>
+	</div>
+	
+	<div>
+		<p>${drinkItem.name}</p>
+		<p>${drinkItem.type}</p>
+	</div>
 </body>
 </html>
