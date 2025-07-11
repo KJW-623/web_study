@@ -181,7 +181,6 @@ public class Practice05Controller {
 		return "practice/practice05/pathCommon/common";
 	}
 	*/
-}
-	 */
+
 
 }
