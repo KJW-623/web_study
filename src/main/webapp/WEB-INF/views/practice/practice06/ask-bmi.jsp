@@ -12,15 +12,15 @@
         <h1>*신체질량지수(BMI) = 체중(kg) / [신장(m)]2</h1>
         <form action="/practice06/result-bmi" method="post">
             <label for="name">이름: </label>
-            <input type="text" id="name" name="name" required> </br>
+            <input type="text" id="name" name="name" required> <br>
 
             <label for="height">키: </label>
             <input type="number" id="height" name="height" required>
-            <span>cm</span> </br>
+            <span>cm</span> <br>
 
             <label for="weight">몸무게: </label>
             <input type="number" id="weight" name="weight" required>
-            <span>kg</span> </br>
+            <span>kg</span> <br>
 
             <button type="submit">확인하기</button>
         </form>
