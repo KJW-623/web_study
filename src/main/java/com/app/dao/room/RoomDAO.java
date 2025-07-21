@@ -8,4 +8,6 @@ public interface RoomDAO {
 	
 	List <Room> findRoomList();
 	
+	int saveRoom(Room room);
+	
 }
