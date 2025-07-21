@@ -13,19 +13,17 @@ public class Practice15RoomController {
 	Practice15RoomService practice15RoomService;
 
 	@GetMapping("/practice15/registerRoom")
-	public String registerCustomer() {
+	public String registerRoom() {
 		return "practice/practice15/registerRoom";
 	}
 
 	@PostMapping("/practice15/registerRoom")
-	public String registerCustomerAction(@ModelAttribute Practice15Room practice15Room) {
+	public String registerRoomAction(@ModelAttribute Practice15Room practice15Room) {
 		// 입력한 데이터 요청받는
-		System.out.println("[Controller] registerRoom");
 
-		// 저장하는 과정(service)
+		// 저장하는 과정 (service)
 		int result = practice15RoomService.saveRoom(practice15Room);
 
 		return "practice/practice15/registerRoom";
 	}
-
 }
