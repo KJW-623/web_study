@@ -15,10 +15,16 @@
 		#{maxGuestCount},
 		#{viewType} )
 	</insert>
-	
+
 	<select id="findRoomList" resultType="Room">
 		SELECT * FROM T_ROOM
-		ORDER BY room_id
+		ORDER
+		BY room_id
+	</select>
+
+	<select id="findRoomByRoomId" resultType="Room" parameterType="int">
+		SELECT * FROM T_ROOM
+		where room_id = #{roomId}
 	</select>
 
 </mapper>
