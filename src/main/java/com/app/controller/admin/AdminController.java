@@ -75,7 +75,7 @@ public class AdminController {
 		if (result > 0) {// 정상적으로 저장 성공
 			return "redirect:/admin/users";
 		} else {// 저장실패
-			return "admin/usersAdd";
+			return "redirect:/admin/usersAdd";
 		}
 	}
 
