@@ -7,7 +7,7 @@
 
 	<insert id="saveUser" parameterType="User">
 		INSERT INTO T_USER VALUES (
-		SEQ_T_USER_PK.nextval,
+		#{id},
 		#{pw},
 		#{name},
 		#{userType})

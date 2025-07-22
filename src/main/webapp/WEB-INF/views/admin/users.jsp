@@ -9,11 +9,10 @@
 </head>
 <body>
 	<h1>관리자 페이지</h1>
-	<h2>users 유저 목록</h2>
+	<h2>사용자 목록 조회</h2>
 
 	<c:forEach var="user" items="${userList}">
-		<p>${user.id}
-			${room.pw} ${room.name}
+		<p>${user.id} ${user.pw} ${user.name}
 
 			<c:choose>
 				<c:when test="${user.userType == 'CUS'}">사용자</c:when>
