@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.app.dto.room.Room;
+import com.app.dto.user.User;
 import com.app.service.room.RoomService;
+import com.app.service.user.UserService;
 
 @Controller
 public class AdminController {
@@ -18,13 +20,16 @@ public class AdminController {
 	@Autowired
 	RoomService roomService;
 
+	@Autowired
+	UserService userService;
+
 	@GetMapping("/admin/registerRoom")
 	public String registerRoom() {
 		return "admin/registerRoom";
 	}
 
 	@PostMapping("/admin/registerRoom")
-	public String registerRoomAction(Room room) {
+	public String registerRoomAction(@ModelAttribute Room room) {
 
 		// 값이 잘 넘어왔는가~
 		System.out.println(room.toString());
@@ -33,7 +38,7 @@ public class AdminController {
 		int result = roomService.saveRoom(room);
 		System.out.println(result);
 
-		if (result > 0) {//정상적으로 저장 성공
+		if (result > 0) {// 정상적으로 저장 성공
 			return "redirect:/admin/rooms";
 		} else {// 저장실패
 			return "admin/registerRoom";
@@ -51,4 +56,68 @@ public class AdminController {
 
 		return "admin/rooms";
 	}
+
+	// 관리자가 사용자계정관리 >> 사용자 계정을 추가
+	@GetMapping("/admin/users/add")
+	public String addUser() {
+		return "admin/usersAdd";
+	}
+
+	@PostMapping("/admin/users/add")
+	public String addUserAction(@ModelAttribute User user) {
+
+		System.out.println(user.toString());
+
+		// room 정보 등록
+		int result = userService.saveUser(user);
+		System.out.println(result);
+
+		if (result > 0) {// 정상적으로 저장 성공
+			return "redirect:/admin/users";
+		} else {// 저장실패
+			return "admin/usersAdd";
+		}
+	}
+
+	// 관리자가 객실 관리하면서 객실 목록 확인
+	@GetMapping("/admin/users")
+	public String users(Model model) {
+		List<User> userList = userService.findUserList();
+
+		model.addAttribute("userList", userList);
+
+		return "admin/users";
+	}
 }
+
+//-------------
+//관리자가 사용자계정관리 -> 사용자 계정을 추가
+//	@GetMapping("/admin/users/add")
+//	public String addUser() {
+//		//화면연결
+//		return "admin/addUser";
+//	}
+//	
+//	@PostMapping("/admin/users/add")
+//	public String addUserAction(User user) {
+//		
+//		System.out.println(user);
+//		
+//		//관리자가 사용자 계정을 추가!!!
+//		//사용자 계정이니까 userType "CUS" 여야 한다!! 전제조건! 로직!
+//
+//		/*
+//		//컨트롤러에서 구분값 처리
+//		user.setUserType("CUS");
+//		//저장 처리 진행
+//		int result = userService.saveUser(user);
+//		*/
+//		
+//		//Customer 사용자 저장용 서비스 메소드 활용
+//		int result = userService.saveCustomerUser(user);
+//		
+//		
+//		//if(result > 0 ) //정상 저장 처리
+//		
+//		return "admin/addUser";
+//	}
