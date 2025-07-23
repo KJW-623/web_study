@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.app.dto.signup.Signup;
 import com.app.dto.user.User;
-import com.app.service.signup.signupService;
 import com.app.service.user.UserService;
 
 @Controller("adminCustomerController")
@@ -16,9 +14,6 @@ public class CustomerController {
 	
 	@Autowired
 	UserService userService;
-	
-	@Autowired
-	signupService signupService;
 
 	@GetMapping("/customer/signup")
 	public String signup() {
