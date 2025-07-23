@@ -43,22 +43,29 @@ public class RoomDAOImpl implements RoomDAO {
 
 		return result;
 	}
-	
+
 	@Override
-	public  Room findRoomByRoomId(int roomId) {
-		
+	public Room findRoomByRoomId(int roomId) {
+
 		Room room = sqlSessionTemplate.selectOne("room_mapper.findRoomByRoomId", roomId);
-		
+
 		return room;
 	}
-	
+
 	@Override
 	public int removeRoom(int roomId) {
-		
+
 		int result = sqlSessionTemplate.delete("room_mapper.removeRoom", roomId);
-		//delete 적용된 행의 수
-		
+		// delete 적용된 행의 수
+
 		return result;
 	}
 
+	@Override
+	public int modifyRoom(Room room) {
+
+		int result = sqlSessionTemplate.update("room_mapper.modifyRoom", room);
+
+		return result;
+	}
 }
