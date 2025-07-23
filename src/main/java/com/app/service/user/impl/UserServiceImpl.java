@@ -54,6 +54,29 @@ public class UserServiceImpl implements UserService {
 
 		return result;
 	}
+	
+	@Override
+	public User findUserById(String id) {
+
+		User user = userDAO.findUserById(id);
+
+		return user;
+	}
+	
+	@Override
+	public User checkUserLogin(User user) {
+
+		User loginUser = userDAO.findUserById(user.getId());
+
+		if(loginUser != null && loginUser.getPw().equals(user.getPw())
+				&& loginUser.getUserType().equals(user.getUserType())) {
+			return loginUser;
+		}
+		//checkUserLogin 메소드 호출 >> return null? id, pw 틀렸다
+		// return user 객체? >> 맞다! 
+		return null;
+	}
+	
 
 }
 
