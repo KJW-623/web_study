@@ -32,6 +32,26 @@ public class UserServiceImpl implements UserService {
 
 		return result;
 	}
+	
+	@Override
+	public int saveAdminUser(User user) {
+		//관리자 계정 추가 할때 필요한 체크 로직....
+
+		user.setUserType("ADM");
+		int result = userDAO.saveUser(user);
+
+		return result;
+	}
+
+	@Override
+	public int saveCustomerUser(User user) {
+		//사용자 계정 추가 할때 필요한 체크 로직....
+
+		user.setUserType("CUS");
+		int result = userDAO.saveUser(user);
+
+		return result;
+	}
 
 }
 

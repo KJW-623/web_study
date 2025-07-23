@@ -10,7 +10,8 @@ public interface UserService {
 
 	int saveUser(User user);
 	
-//	public int saveAdminUser(User user);
-//	public int saveCustomerUser(User user);
+	public int saveAdminUser(User user);
+	public int saveCustomerUser(User user);
+	
 
 }

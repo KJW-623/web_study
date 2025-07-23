@@ -59,9 +59,8 @@ public class AdminController {
 
 		return "admin/rooms";
 	}
-	
-	
-	//roomId 식별자로 구분해서, 하나의 객실에 대한 상세정보 페이지
+
+	// roomId 식별자로 구분해서, 하나의 객실에 대한 상세정보 페이지
 	@GetMapping("/admin/rooms/{roomId}")
 	public String room(@PathVariable String roomId, Model model) {
 
@@ -70,28 +69,16 @@ public class AdminController {
 
 		return "admin/room";
 	}
-	
+
 	@GetMapping("/admin/removeRoom")
 	public String removeRoom(HttpServletRequest request) {
 
 		String roomId = request.getParameter("roomId");
 
 		int result = roomService.removeRoom(Integer.parseInt(roomId));
-		
+
 		return "redirect:/admin/rooms";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	// 관리자가 사용자계정관리 >> 사용자 계정을 추가
 	@GetMapping("/admin/users/add")
@@ -100,22 +87,28 @@ public class AdminController {
 	}
 
 	@PostMapping("/admin/users/add")
-	public String addUserAction(@ModelAttribute User user) {
+	public String addUserAction(User user) {
 
-		System.out.println(user.toString());
+		System.out.println(user);
 
-		// room 정보 등록
-		int result = userService.saveUser(user);
-		System.out.println(result);
+		// 관리자가 사용자 계정을 추가!!!
+		// 사용자 계정이니까 userType "CUS" 여야 한다!! 전제조건! 로직!
 
-		if (result > 0) {// 정상적으로 저장 성공
+		/*
+		 * //컨트롤러에서 구분값 처리 user.setUserType("CUS"); //저장 처리 진행 int result =
+		 * userService.saveUser(user);
+		 */
+
+		// Customer 사용자 저장용 서비스 메소드 활용
+		int result = userService.saveCustomerUser(user);
+
+		if (result > 0) { // 정상 저장 처리
 			return "redirect:/admin/users";
-		} else {// 저장실패
-			return "redirect:/admin/usersAdd";
+		} else {
+			return "admin/addUser";
 		}
 	}
 
-	// 관리자가 객실 관리하면서 객실 목록 확인
 	@GetMapping("/admin/users")
 	public String users(Model model) {
 		List<User> userList = userService.findUserList();
