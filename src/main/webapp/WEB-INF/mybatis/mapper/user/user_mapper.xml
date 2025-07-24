@@ -36,6 +36,14 @@
     	SET pw = #{pw}
     	WHERE id = #{id}
     </update>
+    
+    <update id="modifyUser" parameterType="User">
+    	UPDATE T_USER
+    	SET pw = #{pw},
+    		name = #{name},
+    		user type = #{userType}
+    	WHERE id = #{id}
+    </update>
 
 
 </mapper>
