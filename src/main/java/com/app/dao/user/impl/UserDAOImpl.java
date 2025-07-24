@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.app.dao.user.UserDAO;
 import com.app.dto.room.Room;
 import com.app.dto.user.User;
+import com.app.dto.user.UserSearchCondition;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -65,6 +66,14 @@ public class UserDAOImpl implements UserDAO {
 	public int modifyUser(User user) {
 		int result = sqlSessionTemplate.update("user_mapper.modifyUser", user);
 		return result;
+	}
+
+	@Override
+	public List<User> findUserListBysearchCondition(UserSearchCondition userSearchCondition) {
+		
+		List<User> userList = sqlSessionTemplate.selectList("user_mapper.findUserListBysearchCondition", userSearchCondition);
+		
+		return userList;
 	}
 
 }

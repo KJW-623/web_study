@@ -22,29 +22,78 @@
 	<select id="findById" resultType="User">
 		SELECT *
 		FROM T_USER
-		WHERE id=#{id}
+		WHERE
+		id=#{id}
 	</select>
-	
-	<select id="checkUserLogin" resultType="User" parameterType="User">
-        SELECT *
-        FROM T_USER
-        WHERE id = #{id} AND pw = #{pw} AND userType = #{userType}
-    </select>
-    
-    <update id="modifyUserPw" parameterType="User">
-    	UPDATE T_USER
-    	SET pw = #{pw}
-    	WHERE id = #{id}
-    </update>
-    
-    <update id="modifyUser" parameterType="User">
-    	UPDATE T_USER
-    	SET pw = #{pw},
-    		name = #{name},
-    		user type = #{userType}
-    	WHERE id = #{id}
-    </update>
 
+	<select id="checkUserLogin" resultType="User"
+		parameterType="User">
+		SELECT *
+		FROM T_USER
+		WHERE id = #{id} AND pw = #{pw} AND userType = #{userType}
+	</select>
+
+	<update id="modifyUserPw" parameterType="User">
+		UPDATE T_USER
+		SET pw = #{pw}
+		WHERE id = #{id}
+	</update>
+
+	<update id="modifyUser" parameterType="User">
+		UPDATE T_USER
+		SET pw = #{pw},
+		name = #{name},
+		user type = #{userType}
+		WHERE id = #{id}
+	</update>
+
+	<select id="findUserListBysearchCondition" resultType="User" parameterType="UserSearchCondition">
+		SELECT * 
+		FROM T_USER
+		<where>
+			<if test="(id != null and id != '') or (name != null and name != '')">
+				(
+					<trim prefixOverrides="OR">
+						<if test="id != null and id != ''">
+		 				   id LIKE '%' || #{searchKeyword} || '%'
+						</if>
+						<if test="id == null or id == ''">
+		    				OR name LIKE '%' || #{searchKeyword} || '%'
+						</if>
+					</trim>
+				)
+			</if>
+			<if test="userType != null and userType != ''">
+				AND user_Type = #{userType}
+			</if>  
+		</where>
+	</select>
+
+			<!-- 
+			
+			1=1
+			<if test="id != null and id != ''">
+ 			   AND id LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="id == null or id == ''">
+    			AND name LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="userType != null and userType != ''">
+				AND user_Type = #{userType}
+			</if>  
+			
+			
+			
+			
+			1=2
+			<if test="id != null and id != ''">
+ 			   	OR id LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="id == null or id == ''">
+    			OR name LIKE '%' || #{searchKeyword} || '%'
+			</if>   
+			
+			-->
 
 </mapper>
 
