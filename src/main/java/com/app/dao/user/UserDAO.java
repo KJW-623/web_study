@@ -12,4 +12,6 @@ public interface UserDAO {
 	public User findUserById(String id);
 
 	public User checkUserLogin(User user);
+	
+	public int modifyUserPw(User user);
 }

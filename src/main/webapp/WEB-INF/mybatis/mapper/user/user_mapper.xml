@@ -25,11 +25,17 @@
 		WHERE id=#{id}
 	</select>
 	
-	<select id="checkUserLogin" resultType="User">
+	<select id="checkUserLogin" resultType="User" parameterType="User">
         SELECT *
         FROM T_USER
         WHERE id = #{id} AND pw = #{pw} AND userType = #{userType}
     </select>
+    
+    <update id="modifyUserPw" parameterType="User">
+    	UPDATE T_USER
+    	SET pw = #{pw}
+    	WHERE id = #{id}
+    </update>
 
 
 </mapper>
