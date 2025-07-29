@@ -30,3 +30,15 @@ pw VARCHAR2(32) ,
 name VARCHAR2(32) NOT NULL,
 user_type VARCHAR(8) NOT NULL
 );
+
+CREATE TABLE book (
+    id number PRIMARY KEY,
+    title VARCHAR(100),
+    author VARCHAR(100),
+    price number
+);
+
+CREATE SEQUENCE BOOK_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
