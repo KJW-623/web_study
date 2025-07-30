@@ -6,6 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+</style>
+
+	<!-- <link href="../../resources/css/main.css" rel="stylesheet"> -->
+	<link href="/css/main.css" rel="stylesheet">
+
 </head>
 <body>
 	<h1>메인 페이지</h1>
@@ -20,5 +26,8 @@
 		<button onClick="location.href='/customer/logout'">로그아웃</button>
 		<button onClick="location.href='/customer/mypage'">마이페이지</button>
 	</c:if>
+	<script>
+	</script>
+	<script type="/js/main.js"></script>
 </body>
 </html>
