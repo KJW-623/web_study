@@ -1,25 +1,45 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<style>
+.error-msg {
+	color: red;
+}
+</style>
 </head>
 <body>
 	<h1>회원 가입</h1>
 
 	<form action="/customer/signup" method="post">
-		<label>아이디<input type="text" name="id" id="inputId"></label><br> 
-		
+		<label>아이디<input type="text" name="id" id="inputId" vlaue="${user.id}"></label><br>
+		<spring:hasBindErrors name="user">
+			<c:if test="${errors.hasFieldErrors('id')}">
+				<p class="error-msg">아이디 필수입력입니다.</p>
+				<p class="error-msg">${errors.hasFieldErrors('id').defaultMessage}</p>
+			</c:if>
+		</spring:hasBindErrors>
+
 		<button type="button" id="btn_checkDupId">중복체크</button>
 		<p id="checkDupIdMsg"></p>
-		
-		<label>비밀번호<input type="password" name="pw"></label><br> 
+
+		<label>비밀번호<input type="password" name="pw"></label><br>
 		<label>비밀번호 확인<input type="password"></label><br> 
+		<spring:hasBindErrors name="user">
+			<c:if test="${errors.hasFieldErrors('pw')}">
+				<p class="error-msg">비밀번호 길이 *~12 필수입력입니다.</p>
+				<p class="error-msg">${errors.hasFieldErrors('pw').defaultMessage}</p>
+			</c:if>
+		</spring:hasBindErrors>
 		
-		<label>이름<input type="text" name="name"></label><br>
+		
+		
+		<label>이름<input type="text" name="name" vlaue="${user.name}"}></label><br>
 
 		<button type="submit">가입하기</button>
 	</form>
@@ -28,7 +48,7 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
 		integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
 		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<script>
+	<script>
 			const btn_checkDupId = document.getElementById('btn_checkDupId');
 			const p_checkDupIdMsg = document.getElementById('checkDupIdMsg');
 			
