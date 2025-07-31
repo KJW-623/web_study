@@ -53,6 +53,10 @@ public class UserServiceImpl implements UserService {
 	public int saveCustomerUser(User user) {
 		// 사용자 계정 추가 할때 필요한 체크 로직....
 
+		//UserValidError userValidError = new UserValidError();
+		//if(UserCustomValidator.validate(user, userValidError) == false) {
+
+		
 		// user.setUserType("CUS");
 		user.setUserType(CommonCode.USER_USERTYPE_CUSTOMER);
 		int result = userDAO.saveUser(user);

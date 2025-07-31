@@ -13,6 +13,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,8 +25,10 @@ import com.app.dto.study.api.ApiResponse;
 import com.app.dto.study.api.ApiResponseHeader;
 import com.app.dto.user.User;
 import com.app.dto.user.UserDupCheck;
+import com.app.dto.user.UserValidError;
 import com.app.service.user.UserService;
 import com.app.util.LoginManager;
+import com.app.validator.UserCustomValidator;
 import com.app.validator.UserValidator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,25 +46,33 @@ public class CustomerController {
 	}
 
 	@PostMapping("/customer/signup")
-	public String signupAction(@Valid User user, BindingResult br) {
-								//유효성 검사		검사결과
-		
-		//검증 결과에 문제가 있느냐 없느냐
-		
-		if(br.hasErrors()) {
-		    // 문제 내용을 출력
-		    List<ObjectError> errorList = br.getAllErrors();
-		    for(ObjectError er : errorList) {
-		        System.out.println(er.getObjectName());
-		        System.out.println(er.getDefaultMessage());
-		        System.out.println(er.getCode());
-		        System.out.println(er.getCodes()[0]);
-		    }
-		    
-		    return "customer/signup";
+	public String singupAction(/* @Valid */ @ModelAttribute User user, BindingResult br, Model model) {
+		// 유효성 검사 검사결과
+
+		// 검증 결과에 문제가 있느냐 없느냐
+
+//		if(br.hasErrors()) {
+//		    // 문제 내용을 출력
+//		    List<ObjectError> errorList = br.getAllErrors();
+//		    for(ObjectError er : errorList) {
+//		        System.out.println(er.getObjectName());
+//		        System.out.println(er.getDefaultMessage());
+//		        System.out.println(er.getCode());
+//		        System.out.println(er.getCodes()[0]);
+//		    }
+//		    
+//		    return "customer/signup";
+//		}
+
+		// custom validator
+		UserValidError userValidError = new UserValidError();
+		if (UserCustomValidator.validate(user, userValidError) == false) {
+			// 유효성 검증을 해봤는데, 뭔가 필드에 문제가 있다
+			// model.addAttribute("user", user);
+			model.addAttribute("userValidError", userValidError);
+			return "customer/signup";
 		}
 
-		
 		int result = userService.saveCustomerUser(user);
 		System.out.println(result);
 
@@ -71,65 +82,66 @@ public class CustomerController {
 			return "customer/signup";
 		}
 	}
-	
-	@InitBinder("user")
-	public void initUserBinder(WebDataBinder binder) {
-		UserValidator userValidator = new UserValidator();
-		binder.setValidator(userValidator);
-	}
-	
+
+//	@InitBinder("user")
+//	public void initUserBinder(WebDataBinder binder) {
+//		UserValidator userValidator = new UserValidator();
+//		binder.setValidator(userValidator);
+//	}
+
 	@ResponseBody
 	@PostMapping("/customer/checkDupId")
-	public String checkDupId(@RequestBody String data) {//단순 텍스트
+	public String checkDupId(@RequestBody String data) {// 단순 텍스트
 		System.out.println("/customer/checkDupId");
 		System.out.println("/customer/checkDupId");
-		
-		//처리 로직
-		//클라이언트에서 보낸 데이터가 중복된 사용자 아이디인지 체크
+
+		// 처리 로직
+		// 클라이언트에서 보낸 데이터가 중복된 사용자 아이디인지 체크
 		boolean result = userService.isDuplicatedId(data);
-		if(result) {	//중복O
+		if (result) { // 중복O
 			return "Y";
-		} else {	//중복X
+		} else { // 중복X
 			return "N";
 		}
-		
+
 //		return "/customer/checkDupId";
 //		return "kkkkkkkkkkIdCheck";
 	}
-	//JSON 포맷으로 통신
+
+	// JSON 포맷으로 통신
 	@ResponseBody
 	@PostMapping("/customer/checkDupIdJson")
-	//public String checkDupIdJson(@RequestBody String data) {//단순 텍스트
+	// public String checkDupIdJson(@RequestBody String data) {//단순 텍스트
 	public ApiResponse<String> checkDupIdJson(@RequestBody UserDupCheck userDupCkeck) {
-								//JSON format text가 담겨져서 오면 동일한 key값:필드변수
-								//				자동으로 객체형태로 파싱되어서 데이터가 담겨진다
+		// JSON format text가 담겨져서 오면 동일한 key값:필드변수
+		// 자동으로 객체형태로 파싱되어서 데이터가 담겨진다
 		System.out.println("/customer/checkDupIdJson");
 		System.out.println("/customer/checkDupIdJson");
-		
+
 		log.info("checkDupIdJson 아이디 중복체크 : {}", userDupCkeck);
-		
-		//처리 로직
-		//클라이언트에서 보낸 데이터가 중복된 사용자 아이디인지 체크
+
+		// 처리 로직
+		// 클라이언트에서 보낸 데이터가 중복된 사용자 아이디인지 체크
 		boolean result = userService.isDuplicatedId(userDupCkeck.getId());
-		
+
 		ApiResponse<String> apiResponse = new ApiResponse<String>();
-		
-		//header
+
+		// header
 		ApiResponseHeader header = new ApiResponseHeader();
 		header.setResultCode(ApiCommonCode.API_RESULT_SUCCESS);
 		header.setResultMessage(ApiCommonCode.API_RESULT_SUCCESS_MSG);
-		
+
 		apiResponse.setHeader(header);
-		
-		//body
-		if(result) {	//중복O
+
+		// body
+		if (result) { // 중복O
 			apiResponse.setBody("Y");
-		} else {	//중복X
+		} else { // 중복X
 			apiResponse.setBody("N");
 		}
-		
+
 		return apiResponse;
-		
+
 //		return "/customer/checkDupId";
 //		return "kkkkkkkkkkIdCheck";
 	}
@@ -189,9 +201,9 @@ public class CustomerController {
 	@GetMapping("/customer/logout")
 	public String logout(HttpSession session) {
 
-		//session.invalidate();
+		// session.invalidate();
 		LoginManager.logout(session);
-		
+
 		return "redirect:/main";
 	}
 
@@ -213,7 +225,7 @@ public class CustomerController {
 		// User 전체 update -> 기존정보는 유지 + 변경할 비밀번호
 
 		// 특정 id의 비밀번호만 update
-		//user.setId((String) session.getAttribute("loginUserId"));
+		// user.setId((String) session.getAttribute("loginUserId"));
 		user.setId(LoginManager.getLoginUserId(session));
 
 		System.out.println("비밀번호 변경에 사용할 user 객체");
