@@ -1,5 +1,7 @@
 package com.app.controller.study.react_spring_api;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.study.DrinkItem;
+import com.app.dto.study.Member;
+import com.app.util.LoginManager;
 
 import oracle.jdbc.proxy.annotation.Post;
 
@@ -74,5 +78,41 @@ public class ReactSpringAPIController {
 		
 		return drinkList;
 	}
-
+	
+	//로그인
+	@PostMapping("/api/login")
+	public String login(@RequestBody Member member, HttpServletRequest request) {
+		System.out.println(member.getId());
+		System.out.println(member.getPw());
+		
+		//id pw 값 >> DB 사용자 계정정보 비교
+		// >> 서비스 >> DAO
+		
+		// 로그인 성공 return "ok"
+		// 로그인 실패 return "no"
+		//return apiResponse (header, body)
+		//1 2 3 4 resultCode...
+		
+		//로그인 성공으로 간주 >> ok
+		
+		//Session 로그인 여부 처리
+		LoginManager.setSessionLoginUserId(request, member.getId());
+		
+		return "ok";
+	}
+	
+	@PostMapping("/api/loginCheck")
+	public String loginCheck(HttpServletRequest request) {
+		if(LoginManager.isLogin(request)) {
+			String loginId = LoginManager.getLoginUserId(request);
+			System.out.println(loginId);
+			return "login user : " + loginId;
+		} else {
+			return "Not Login";
+		}
+		
+		
+		
+		
+	}
 }
